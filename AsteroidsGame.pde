@@ -1,23 +1,27 @@
 //your variable declarations here
 SpaceShip bob = new SpaceShip();
+Asteroid [] asteroids;  
 Star [] stars;
 public void setup() 
 {
   //your code here
-  size(600,600);
-
+  size(800,800);
   frameRate(60);
-stars = new Star[100];
+stars = new Star[300];
  for (int i =0; i<stars.length; i++){
   stars[i] = new Star();
     }
+asteroids = new Asteroid[15];
+ for (int i =0; i<asteroids.length; i++){
+  asteroids[i] = new Asteroid();
 
+    }
 
 }
 public void draw() 
 {
   //your code here
-    background(0);
+    background(255);
   
     bob.show();
     bob.move();
@@ -26,19 +30,37 @@ public void draw()
     stars[i].show();
    
   }
+  for(int i = 0; i < asteroids.length; i++){
+    
+    asteroids[i].show();
+    asteroids[i].move();
+    asteroids[i].rotate(asteroids[i].getRotation());
+   
+  }
+
+
+
 
 
 }
  public void keyPressed(){
       if(key == 'w'){
-          bob.accelerate(0.2);
-      } else if (key == 'a') {
-          bob.rotate(-5);
-      } else if (key == 'd') {
-        bob.rotate(5);
-      } else if (key == ' ') {
+          bob.accelerate(0.25);
+      } 
+       if (key == 'a') {
+          bob.rotate(-10);
+      } 
+       if (key == 'd') {
+        bob.rotate(10);
+      } 
+       if (key == ' ') {
         bob.hyperspace();
       }
+      if (key == 's' ){
+        bob.accelerate(-0.25);
+      }
+
+
         
   }
 
@@ -61,16 +83,16 @@ class SpaceShip extends Floater
         yCorners[2] = 9;
         xCorners[3] = -9;
         yCorners[3] = 0;
-      myColor = 255;
-      myCenterX = 300.0;
-      myCenterY = 300.0;
+      myColor = 0;
+      myCenterX = 400.0;
+      myCenterY = 400.0;
       myDirectionX = 0.0;
       myDirectionY = 0.0;
       myPointDirection = 0.0;
     }
     public void hyperspace(){
-        bob.setX((int)(Math.random()*600));
-        bob.setY((int)(Math.random()*600));
+        bob.setX((int)(Math.random()*800));
+        bob.setY((int)(Math.random()*800));
         bob.setDirectionX(0.0);
         bob.setDirectionY(0.0);
         bob.setPointDirection((int)(Math.random()*360));
@@ -96,13 +118,13 @@ class Star{
   private int size;
 
 public Star(){
-     x = (int)(Math.random()*600);
-     y = (int)(Math.random()*600);
+     x = (int)(Math.random()*800);
+     y = (int)(Math.random()*800);
      size = ((int)(Math.random()*5)+1);
   }
 
   public void show(){
-    fill(255);
+    fill(0);
     ellipse(x,y,size,size);
 
 
@@ -110,7 +132,82 @@ public Star(){
 
 }
 
+class Asteroid extends Floater{
 
+  private int rotation;
+  private int pX, pY;
+  public Asteroid(){
+    rotation = (int)(Math.random()*6)-3;
+    pX = (int)(Math.random()*6)-3;
+    if(pX == 0){pX =1;}
+    pY = (int)(Math.random()*6)-3;
+    if(pY == 0){pY =1;}
+      corners = 7;
+      xCorners = new int[corners];
+      yCorners = new int[corners];
+          xCorners[0] = -11;
+          yCorners[0] = -10;
+          xCorners[1] = 7;
+          yCorners[1] = -8;
+          xCorners[2] = 9;
+          yCorners[2] = 3;
+          xCorners[3] = 6;
+          yCorners[3] = 8;
+          xCorners[4] = -6;
+          yCorners[4] = 8;
+          xCorners[5] = -5;
+          yCorners[5] = 3;
+          xCorners[6] = -8;
+          xCorners[6] = 2;
+      myColor = 0;
+      myCenterX = (int)(Math.random()*800);
+      myCenterY = (int)(Math.random()*800);
+      myDirectionX = 0.0;
+      myDirectionY = 0.0;
+      myPointDirection = 0.0;
+
+
+
+  }
+
+  public void move(){
+      myCenterX+= pX;
+      myCenterY+= pY;
+          if(myCenterX >width)
+    {     
+      myCenterX = 0;    
+    }    
+    else if (myCenterX<0)
+    {     
+      myCenterX = width;    
+    }    
+    if(myCenterY >height)
+    {    
+      myCenterY = 0;    
+    }   
+    else if (myCenterY < 0)
+    {     
+      myCenterY = height;    
+    }
+
+
+  }
+
+    public void setX(int x){myCenterX = x;}
+    public int getX(){return  (int)(myCenterX);}
+    public void setY(int y){myCenterY = y;}
+    public int getY(){return  (int)(myCenterY);}
+    public void setDirectionX(double x){myDirectionX = x;}
+    public double getDirectionX(){return myDirectionX;}
+    public void setDirectionY(double y){myDirectionY = y;}
+    public double getDirectionY(){return myDirectionY;}
+    public void setPointDirection(int degrees) {myPointDirection = degrees;} 
+    public double getPointDirection(){return myPointDirection;}
+    public void setRotation(int r){rotation = r;}
+    public int getRotation(){return rotation;}
+
+
+}
 
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
