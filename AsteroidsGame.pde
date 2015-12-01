@@ -1,6 +1,6 @@
 //your variable declarations here
 SpaceShip bob = new SpaceShip();
-Asteroid [] asteroids;  
+ArrayList <Asteroid> asteroids = new ArrayList <Asteroid>();
 Star [] stars;
 public void setup() 
 {
@@ -11,9 +11,9 @@ stars = new Star[300];
  for (int i =0; i<stars.length; i++){
   stars[i] = new Star();
     }
-asteroids = new Asteroid[15];
- for (int i =0; i<asteroids.length; i++){
-  asteroids[i] = new Asteroid();
+
+ for (int i =0; i<15; i++){
+  asteroids.add(i, new Asteroid());
 
     }
 
@@ -30,11 +30,9 @@ public void draw()
     stars[i].show();
    
   }
-  for(int i = 0; i < asteroids.length; i++){
-    
-    asteroids[i].show();
-    asteroids[i].move();
-    asteroids[i].rotate(asteroids[i].getRotation());
+  for(int i = 0; i < asteroids.size(); i++){
+    asteroids.get(i).show();
+    asteroids.get(i).move();
    
   }
 
@@ -135,10 +133,10 @@ public Star(){
 class Asteroid extends Floater{
 
   private int rotation;
-  private int pX, pY;
+  private double pX, pY;
   public Asteroid(){
     rotation = (int)(Math.random()*6)-3;
-    pX = (int)(Math.random()*6)-3;
+    pX = (double)(Math.random()*6)-3;
     if(pX == 0){pX =1;}
     pY = (int)(Math.random()*6)-3;
     if(pY == 0){pY =1;}
