@@ -5,14 +5,14 @@ Star [] stars;
 public void setup() 
 {
   //your code here
-  size(800,800);
+  size(600,600);
   frameRate(60);
 stars = new Star[300];
  for (int i =0; i<stars.length; i++){
   stars[i] = new Star();
     }
 
- for (int i =0; i<15; i++){
+ for (int i =0; i<6; i++){
   asteroids.add(i, new Asteroid());
 
     }
@@ -21,7 +21,7 @@ stars = new Star[300];
 public void draw() 
 {
   //your code here
-    background(255);
+    background(0);
   
     bob.show();
     bob.move();
@@ -31,8 +31,21 @@ public void draw()
    
   }
   for(int i = 0; i < asteroids.size(); i++){
-    asteroids.get(i).show();
-    asteroids.get(i).move();
+    if(dist(asteroids.get(i).getX(), asteroids.get(i).getY(), bob.getX(), bob.getY())>30){
+      asteroids.get(i).show();
+      asteroids.get(i).move();
+      asteroids.get(i).rotate();
+     
+    } else {
+     asteroids.remove(i);
+
+      
+    }
+
+
+
+    
+   
    
   }
 
@@ -56,7 +69,7 @@ public void draw()
       }
       if (key == 's' ){
         bob.accelerate(-0.25);
-      }
+      } 
 
 
         
@@ -81,16 +94,16 @@ class SpaceShip extends Floater
         yCorners[2] = 9;
         xCorners[3] = -9;
         yCorners[3] = 0;
-      myColor = 0;
-      myCenterX = 400.0;
-      myCenterY = 400.0;
+      myColor = 255;
+      myCenterX = 300.0;
+      myCenterY = 300.0;
       myDirectionX = 0.0;
       myDirectionY = 0.0;
       myPointDirection = 0.0;
     }
     public void hyperspace(){
-        bob.setX((int)(Math.random()*800));
-        bob.setY((int)(Math.random()*800));
+        bob.setX((int)(Math.random()*600));
+        bob.setY((int)(Math.random()*600));
         bob.setDirectionX(0.0);
         bob.setDirectionY(0.0);
         bob.setPointDirection((int)(Math.random()*360));
@@ -116,13 +129,13 @@ class Star{
   private int size;
 
 public Star(){
-     x = (int)(Math.random()*800);
-     y = (int)(Math.random()*800);
+     x = (int)(Math.random()*600);
+     y = (int)(Math.random()*600);
      size = ((int)(Math.random()*5)+1);
   }
 
   public void show(){
-    fill(0);
+    fill(253);
     ellipse(x,y,size,size);
 
 
@@ -135,31 +148,43 @@ class Asteroid extends Floater{
   private int rotation;
   private double pX, pY;
   public Asteroid(){
-    rotation = (int)(Math.random()*6)-3;
-    pX = (double)(Math.random()*6)-3;
-    if(pX == 0){pX =1;}
-    pY = (int)(Math.random()*6)-3;
-    if(pY == 0){pY =1;}
-      corners = 7;
-      xCorners = new int[corners];
-      yCorners = new int[corners];
-          xCorners[0] = -11;
-          yCorners[0] = -10;
-          xCorners[1] = 7;
-          yCorners[1] = -8;
-          xCorners[2] = 9;
-          yCorners[2] = 3;
-          xCorners[3] = 6;
-          yCorners[3] = 8;
-          xCorners[4] = -6;
-          yCorners[4] = 8;
-          xCorners[5] = -5;
-          yCorners[5] = 3;
-          xCorners[6] = -8;
-          xCorners[6] = 2;
-      myColor = 0;
-      myCenterX = (int)(Math.random()*800);
-      myCenterY = (int)(Math.random()*800);
+    rotation = (int)(Math.random()*4)-2;
+    pX = (double)(Math.random()*2)-1;
+    if(pX == 0){pX =0.5;}
+    pY = (double)(Math.random()*2)-1;
+    if(pY == 0){pY =0.5;}
+ corners = 6;
+
+xCorners = new int[corners];
+
+yCorners = new int[corners];
+
+xCorners[0] = -46;
+
+yCorners[0] = -24;
+
+xCorners[1] = 32;
+
+yCorners[1] = -27;
+
+xCorners[2] = 27;
+
+yCorners[2] = 34;
+
+xCorners[3] = 23;
+
+yCorners[3] = 52;
+
+xCorners[4] = -29;
+
+yCorners[4] = 41;
+
+xCorners[5] = -27;
+
+yCorners[5] = 39;
+      myColor = 254;
+      myCenterX = (int)(Math.random()*600);
+      myCenterY = (int)(Math.random()*600);
       myDirectionX = 0.0;
       myDirectionY = 0.0;
       myPointDirection = 0.0;
@@ -169,8 +194,12 @@ class Asteroid extends Floater{
   }
 
   public void move(){
+
+
       myCenterX+= pX;
       myCenterY+= pY;
+
+
           if(myCenterX >width)
     {     
       myCenterX = 0;    
@@ -190,6 +219,12 @@ class Asteroid extends Floater{
 
 
   }
+
+  public void rotate() {
+    myPointDirection++;
+  }
+
+
 
     public void setX(int x){myCenterX = x;}
     public int getX(){return  (int)(myCenterX);}
