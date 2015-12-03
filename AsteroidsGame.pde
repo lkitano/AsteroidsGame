@@ -1,5 +1,6 @@
 //your variable declarations here
 SpaceShip bob = new SpaceShip();
+ArrayList <Bullet> bullets = new ArrayList <Bullet>();
 ArrayList <Asteroid> asteroids = new ArrayList <Asteroid>();
 Star [] stars;
 public void setup() 
@@ -17,6 +18,9 @@ stars = new Star[300];
 
     }
 
+
+   
+
 }
 public void draw() 
 {
@@ -24,14 +28,16 @@ public void draw()
     background(0);
   
     bob.show();
+    
     bob.move();
+   
   for(int i = 0; i < stars.length; i++){
     
     stars[i].show();
    
   }
   for(int i = 0; i < asteroids.size(); i++){
-    if(dist(asteroids.get(i).getX(), asteroids.get(i).getY(), bob.getX(), bob.getY())>30){
+    if(dist(asteroids.get(i).getX(), asteroids.get(i).getY(), bob.getX(), bob.getY())>60){
       asteroids.get(i).show();
       asteroids.get(i).move();
       asteroids.get(i).rotate();
@@ -40,13 +46,13 @@ public void draw()
      asteroids.remove(i);
 
       
-    }
+    } 
+  }
+  for(int i = 0; i < bullets.size(); i++){
+    bullets.get(i).move();
+    bullets.get(i).show();
 
 
-
-    
-   
-   
   }
 
 
@@ -74,6 +80,11 @@ public void draw()
 
         
   }
+public void mouseClicked(){
+  bullets.add(new Bullet(bob));
+
+
+}
 
 
 class SpaceShip extends Floater  
@@ -241,6 +252,58 @@ yCorners[5] = 39;
 
 
 }
+
+
+class Bullet extends Floater{
+  public Bullet(SpaceShip bob){
+    myCenterX = bob.getX();
+    myCenterY = bob.getY();
+    myPointDirection = bob.getPointDirection();
+    myDirectionX = 5*Math.cos(myPointDirection*(Math.PI/180)) + bob.getDirectionX();
+    myDirectionY = 5*Math.sin(myPointDirection*(Math.PI/180)) + bob.getDirectionY();
+  }
+
+
+  public void show(){
+    fill(255,0,0);
+    ellipse((float)myCenterX,(float)myCenterY,5,5);
+  } 
+
+
+    public void move ()   {      
+         
+    myCenterX += myDirectionX;    
+    myCenterY += myDirectionY;     
+
+     
+  } 
+
+
+
+
+
+
+
+
+
+    public void setX(int x){myCenterX = x;}
+    public int getX(){return  (int)(myCenterX);}
+    public void setY(int y){myCenterY = y;}
+    public int getY(){return  (int)(myCenterY);}
+    public void setDirectionX(double x){myDirectionX = x;}
+    public double getDirectionX(){return myDirectionX;}
+    public void setDirectionY(double y){myDirectionY = y;}
+    public double getDirectionY(){return myDirectionY;}
+    public void setPointDirection(int degrees) {myPointDirection = degrees;} 
+    public double getPointDirection(){return myPointDirection;}
+    
+
+
+
+}
+
+
+
 
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
