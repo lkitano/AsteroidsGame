@@ -1,7 +1,14 @@
 //your variable declarations here
+
+
+
+
 SpaceShip bob = new SpaceShip();
 ArrayList <Bullet> bullets = new ArrayList <Bullet>();
 ArrayList <Asteroid> asteroids = new ArrayList <Asteroid>();
+ArrayList <smallAsteroid> smallAsteroids = new ArrayList <smallAsteroid>();
+int bX;
+int bY;
 Star [] stars;
 public void setup() 
 {
@@ -18,13 +25,14 @@ stars = new Star[300];
 
     }
 
-
+    
    
 
 }
 public void draw() 
 {
-  //your code here
+  
+ //your code here
     background(0);
   
     bob.show();
@@ -36,19 +44,17 @@ public void draw()
     stars[i].show();
    
   }
-  for(int i = 0; i < asteroids.size(); i++){
-    if(dist(asteroids.get(i).getX(), asteroids.get(i).getY(), bob.getX(), bob.getY())>60){
-      asteroids.get(i).show();
-      asteroids.get(i).move();
-      asteroids.get(i).rotate();
-     
-    } else {
-     asteroids.remove(i);
 
-      
-    } 
-  }
-  for(int i = 0; i < bullets.size(); i++){
+  checkIfCollisionBullet();
+
+
+
+  checkIfCollisionShip();
+
+    
+  
+
+ for(int i = 0; i < bullets.size(); i++){
     bullets.get(i).move();
     bullets.get(i).show();
 
@@ -60,6 +66,7 @@ public void draw()
 
 
 }
+
  public void keyPressed(){
       if(key == 'w'){
           bob.accelerate(0.25);
@@ -90,7 +97,7 @@ public void mouseClicked(){
 class SpaceShip extends Floater  
 {   
     //your code here
-      
+      private int lives;
 
 
      public SpaceShip(){
@@ -111,6 +118,7 @@ class SpaceShip extends Floater
       myDirectionX = 0.0;
       myDirectionY = 0.0;
       myPointDirection = 0.0;
+      lives =3;
     }
     public void hyperspace(){
         bob.setX((int)(Math.random()*600));
@@ -131,6 +139,8 @@ class SpaceShip extends Floater
     public double getDirectionY(){return myDirectionY;}
     public void setPointDirection(int degrees) {myPointDirection = degrees;} 
     public double getPointDirection(){return myPointDirection;}
+    public void setLives(int x){lives = x;}
+    public int getLives(){return lives;}
 
 }
  
@@ -253,6 +263,64 @@ yCorners[5] = 39;
 
 }
 
+class smallAsteroid extends Asteroid{
+  private int rotation;
+  private double pX, pY;
+
+
+   public smallAsteroid(){
+    rotation = (int)(Math.random()*4)-2;
+    pX = (double)(Math.random()*2)-1;
+    if(pX == 0){pX =0.5;}
+    pY = (double)(Math.random()*2)-1;
+    if(pY == 0){pY =0.5;}
+ corners = 6;
+
+xCorners = new int[corners];
+
+yCorners = new int[corners];
+
+xCorners[0] = -16;
+
+yCorners[0] = -14;
+
+xCorners[1] = 12;
+
+yCorners[1] = -17;
+
+xCorners[2] = 21;
+
+yCorners[2] = 24;
+
+xCorners[3] = 13;
+
+yCorners[3] = 32;
+
+xCorners[4] = -23;
+
+yCorners[4] = 24;
+
+xCorners[5] = -20;
+
+yCorners[5] = 12;
+      myColor = 254;
+      myCenterX = (int)(Math.random()*600);
+      myCenterY = (int)(Math.random()*600);
+      myDirectionX = 0.0;
+      myDirectionY = 0.0;
+      myPointDirection = 0.0;
+
+
+
+  }
+
+
+
+
+
+
+}
+
 
 class Bullet extends Floater{
   public Bullet(SpaceShip bob){
@@ -266,6 +334,7 @@ class Bullet extends Floater{
 
   public void show(){
     fill(255,0,0);
+    stroke(255,0,0);
     ellipse((float)myCenterX,(float)myCenterY,5,5);
   } 
 
@@ -302,7 +371,46 @@ class Bullet extends Floater{
 
 }
 
+public void checkIfCollisionShip(){
+for (int i = 0; i < asteroids.size(); i++){
+if (dist(asteroids.get(i).getX(), asteroids.get(i).getY(), bob.getX(), bob.getY())<60){
+        asteroids.remove(i);
+      } else {
+      asteroids.get(i).show();
+      asteroids.get(i).move();
+      asteroids.get(i).rotate();
+      bob.setLives(bob.getLives()-1);
+      smallAsteroids.add(new smallAsteroid());
+ 
 
+
+
+
+  }
+
+ }
+}
+public void checkIfCollisionBullet(){
+  for (int i = 0; i < asteroids.size(); i++){
+    for (int j = 0; j < bullets.size(); j++ ){
+      if(dist(asteroids.get(i).getX(), asteroids.get(i).getY(), bullets.get(j).getX(), bullets.get(j).getY())<60){
+          asteroids.remove(i);
+          bullets.remove(j);
+
+
+      } 
+    }
+  }
+
+
+}
+/*public void checkIfDead(){
+  if (bob.getLives() = 0){
+
+  }
+}
+
+}*/ 
 
 
 
