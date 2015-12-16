@@ -60,6 +60,10 @@ public void draw()
 
 
   }
+  for(int i =0; i < smallAsteroids.size(); i++){
+    smallAsteroids.get(i).show();
+    smallAsteroids.get(i).move();
+  }
 
 
 
@@ -268,12 +272,14 @@ class smallAsteroid extends Asteroid{
   private double pX, pY;
 
 
-   public smallAsteroid(){
+   public smallAsteroid(double x,double y){
     rotation = (int)(Math.random()*4)-2;
     pX = (double)(Math.random()*2)-1;
     if(pX == 0){pX =0.5;}
     pY = (double)(Math.random()*2)-1;
     if(pY == 0){pY =0.5;}
+    x = myCenterX;
+    y = myCenterY;
  corners = 6;
 
 xCorners = new int[corners];
@@ -304,8 +310,7 @@ xCorners[5] = -20;
 
 yCorners[5] = 12;
       myColor = 254;
-      myCenterX = (int)(Math.random()*600);
-      myCenterY = (int)(Math.random()*600);
+    
       myDirectionX = 0.0;
       myDirectionY = 0.0;
       myPointDirection = 0.0;
@@ -380,8 +385,7 @@ if (dist(asteroids.get(i).getX(), asteroids.get(i).getY(), bob.getX(), bob.getY(
       asteroids.get(i).move();
       asteroids.get(i).rotate();
       bob.setLives(bob.getLives()-1);
-      smallAsteroids.add(new smallAsteroid());
- 
+     
 
 
 
@@ -394,8 +398,13 @@ public void checkIfCollisionBullet(){
   for (int i = 0; i < asteroids.size(); i++){
     for (int j = 0; j < bullets.size(); j++ ){
       if(dist(asteroids.get(i).getX(), asteroids.get(i).getY(), bullets.get(j).getX(), bullets.get(j).getY())<60){
+          smallAsteroids.add(new smallAsteroid(asteroids.get(i).getX(),asteroids.get(i).getY()));
+          smallAsteroids.add(new smallAsteroid(asteroids.get(i).getX(),asteroids.get(i).getY()));
           asteroids.remove(i);
           bullets.remove(j);
+
+          
+ 
 
 
       } 
